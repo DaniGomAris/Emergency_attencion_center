@@ -2,24 +2,19 @@ class PriorityQueue:
     def __init__(self):
         self.cola = []
 
-
     def enqueue(self, informacion):
         self.cola.append(informacion)
-
 
     def dequeue(self):
         if self.cola:
             self.cola.pop(0)
 
-
     def top(self):
         return self.cola[0]
-
 
     def tamaño(self):
         return len(self.cola)
     
-
     def hayar_mayor_valor(self):
         mayor = -1
         posicion = 0
@@ -32,11 +27,9 @@ class PriorityQueue:
             posicion += 1
         return posicion_del_mayor
 
-
     def imprimir_cola(self):
         for informacion_persona in self.cola:
             print(f" El orden de prioridad es: : {informacion_persona.datos_conjuntos}")
-
 
     def llevar_a_primera_posicion(self):
         cola_auxiliar = PriorityQueue()
