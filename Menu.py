@@ -21,9 +21,7 @@ class MenuProgram:
             informacion_persona = InformacionPersona(persona)
             self.cola.enqueue(informacion_persona)
             contador += 1
-        cola = self.cola.llevar_a_primera_posicion()
-        print("|Solicitud  |  Nombre | Problema | Nivel|")
-        cola.imprimir_cola()   
+        cola = self.cola.llevar_a_primera_posicion()   
                                  
     def menu(self):
         print("""
