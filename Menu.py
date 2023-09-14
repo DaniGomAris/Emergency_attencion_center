@@ -1,6 +1,7 @@
 import random
+import sys
 from Priority_Queue import PriorityQueue
-from Program import Persona, InformacionPersona
+from Datos_Solicitud import Persona, InformacionPersona
 from Persons import nombres,apellidos,problemas_tecnicos
 
 class MenuProgram:
@@ -30,6 +31,7 @@ Menu
 2. Atender solicitud
 3. Visualizar solicitudes
 4. Actualizacion de urgencia
+5. Salir
 """)
         opcion_menu = int(input("Opcion: "))
         if opcion_menu == 1:
@@ -44,26 +46,30 @@ Menu
         if opcion_menu == 4:
             self.acualizar_solicitud()
 
+        if opcion_menu == 5:
+            sys.exit("Chao, gracias por usar este programa")
+
     def agregar_solicitud(self):
+        # Plantilla para crear una nueva solicitud
         nombre = input("Ingrese nombre: ")
         apellido = input("Ingrese apellido: ")
         tecnicos = input("Ingrese problema tecnico: ")
         urgencia = int(input("Ingrese nivel de urgencia(1,2,3): "))
         numero_de_solicitud = random.randint(1, 2500)
 
-        if 1 <= urgencia <= 3:
-            persona = Persona(urgencia, nombre +" "+ apellido, tecnicos, numero_de_solicitud)
-            informacion_persona = InformacionPersona(persona)
-            self.cola.enqueue(informacion_persona)
-            self.cola.llevar_a_primera_posicion()
+        if 1 <= urgencia <= 3: # Verifica su nivel de urgencia (mayor o igual a 1 y menor o igual a 3)
+            persona = Persona(urgencia, nombre +" "+ apellido, tecnicos, numero_de_solicitud) # Informacion de la solicitud
+            informacion_persona = InformacionPersona(persona) # Crea una nueva persona
+            self.cola.enqueue(informacion_persona) # Encola la nueva solicitud
+            self.cola.llevar_a_primera_posicion() # Reorganiza la cola
             self.menu()
         else:
             print("nivel de urgencia incorrecto")
             self.menu()
             
     def atender_solicitud(self):
-        informacion_persona = self.cola.top()
-        self.cola.dequeue()
+        informacion_persona = self.cola.top() # informacion de la persona de la primera posicion
+        self.cola.dequeue() # Retorna la primera posicion de la cola de solicitudes
         print("Solicitud atendida:")
         print("Urgencia:", informacion_persona.persona.urgencia)
         print("Nombre:", informacion_persona.persona.nombre)
@@ -76,16 +82,16 @@ Menu
         self.cola.imprimir_cola()
         self.menu()
         
-    def acualizar_solicitud(self):
-        numero_de_solicitud = int(input("Ingrese el número de solicitud que desea actualizar: "))
-        new_urgencia = int(input("Ingrese el nuevo nivel de urgencia (1, 2, 3): "))
+    def actualizar_solicitud(self):
+        numero_de_solicitud = int(input("Ingrese el número de solicitud que desea actualizar: "))  # Numero de solicitud para hacer cambio de nivel de urgencia
+        new_urgencia = int(input("Ingrese el nuevo nivel de urgencia (1, 2, 3): "))  # Nuevo nivel de urgencia
 
-        for informacion_persona in self.cola.cola:
-            if informacion_persona.persona.numeroDeSolicitud == numero_de_solicitud:
-                informacion_persona.persona.urgencia = new_urgencia
-                self.cola.llevar_a_primera_posicion()
+        for informacion_persona in self.cola.cola:  #  La primera cola es la instancia de la clase (MenuProgram) y la segunda cola se refiere a la cola de prioridad dentro de esa instancia (PriorityQueue)
+            if informacion_persona.persona.numeroDeSolicitud == numero_de_solicitud:  # Verifica si la solicitud ingresada si existe
+                informacion_persona.persona.urgencia = new_urgencia  # Actualiza el nivel de urgencia de la solicitud
+                self.cola.llevar_a_primera_posicion()  # Reorganiza la cola
                 print("Solicitud actualizada correctamente.")
-                self.menu()
+                self.menu() 
 
-        print("No se encontró ninguna solicitud con ese número de solicitud.")
-        self.menu()
+        print("No se encontró ninguna solicitud con ese número de solicitud.") 
+        self.menu() 
