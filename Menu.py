@@ -31,7 +31,8 @@ Menu
 2. Atender solicitud
 3. Visualizar solicitudes
 4. Actualizacion de urgencia
-5. Salir
+5. Atender lotes
+6. Salir
 """)
         opcion_menu = int(input("Opcion: "))
         if opcion_menu == 1:
@@ -47,6 +48,9 @@ Menu
             self.acualizar_solicitud()
 
         if opcion_menu == 5:
+            self.atender_lotes()
+
+        if opcion_menu == 6:
             sys.exit("Chao, gracias por usar este programa")
 
     def agregar_solicitud(self):
@@ -78,6 +82,7 @@ Menu
         self.menu()
 
     def visualizar_solicitudes(self):
+        print()
         print("|Solicitud  |  Nombre | Problema | Nivel|")
         self.cola.imprimir_cola()
         self.menu()
@@ -95,3 +100,50 @@ Menu
 
         print("No se encontró ninguna solicitud con ese número de solicitud.") 
         self.menu() 
+
+    def atender_lotes(self, lvl = 3, cola_nueva = PriorityQueue()):
+        informacion_persona = self.cola.top()
+
+        if len(self.cola.cola) == 1:
+            self.cola.dequeue() # Retorna la primera posicion de la cola de solicitudes y la agrega a la otra cola
+            print("Solicitud atendida:")
+            print("Urgencia:", informacion_persona.persona.urgencia)
+            print("Nombre:", informacion_persona.persona.nombre)
+            print("Descripción del problema:", informacion_persona.persona.descripcionDelProblema)
+            print("Número de solicitud:", informacion_persona.persona.numeroDeSolicitud)
+            print()
+
+            nombre = informacion_persona.persona.nombre
+            problema = informacion_persona.persona.descripcionDelProblema
+            urgencia = informacion_persona.persona.urgencia
+            numero_de_solicitud = informacion_persona.persona.numeroDeSolicitud
+
+            persona = Persona(urgencia, nombre, problema, numero_de_solicitud)
+            informacion_persona = InformacionPersona(persona)
+            cola_nueva.enqueue(informacion_persona)
+
+            cola_nueva.imprimir_cola()
+            self.menu()
+
+        if informacion_persona.persona.urgencia != lvl:
+            self.atender_lotes(lvl - 1)
+
+        else:
+            self.cola.dequeue() # Retorna la primera posicion de la cola de solicitudes y la agrega a la otra cola
+            print("Solicitud atendida:")
+            print("Urgencia:", informacion_persona.persona.urgencia)
+            print("Nombre:", informacion_persona.persona.nombre)
+            print("Descripción del problema:", informacion_persona.persona.descripcionDelProblema)
+            print("Número de solicitud:", informacion_persona.persona.numeroDeSolicitud)
+            print()
+
+            nombre = informacion_persona.persona.nombre
+            problema = informacion_persona.persona.descripcionDelProblema
+            urgencia = informacion_persona.persona.urgencia
+            numero_de_solicitud = informacion_persona.persona.numeroDeSolicitud
+
+            persona = Persona(urgencia, nombre, problema, numero_de_solicitud)
+            informacion_persona = InformacionPersona(persona)
+            cola_nueva.enqueue(informacion_persona)
+
+            self.atender_lotes(lvl)
