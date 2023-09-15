@@ -101,76 +101,43 @@ Menu
         self.menu() 
 
 
-    def atender_lotes(self, colalvl1=PriorityQueue(), colalvl2=PriorityQueue(), colalvl3=PriorityQueue()):
-        self.cola.cola.sort(key=lambda informacion_persona: informacion_persona.persona.nombre)
+    def atender_lotes(self, colaABC = PriorityQueue_ABC()):
+        posicion = 0
 
         while not self.cola.is_empty():
-            informacion_persona = self.cola.top()  # Obtener la información de la persona en la primera posición
 
-            if informacion_persona.persona.urgencia == 3:
-                print("Solicitud atendida:")
-                print("Urgencia:", informacion_persona.persona.urgencia)
-                print("Nombre:", informacion_persona.persona.nombre)
-                print("Descripción del problema:", informacion_persona.persona.descripcionDelProblema)
-                print("Número de solicitud:", informacion_persona.persona.numeroDeSolicitud)
-                print()
+            informacion_persona = self.cola.top()
+            print(informacion_persona.persona.urgencia)
 
-                nombre = informacion_persona.persona.nombre
-                problema = informacion_persona.persona.descripcionDelProblema
-                urgencia = informacion_persona.persona.urgencia
-                numero_de_solicitud = informacion_persona.persona.numeroDeSolicitud
+            print("Solicitud atendida:")
+            print("Urgencia:", informacion_persona.persona.urgencia)
+            print("Nombre:", informacion_persona.persona.nombre)
+            print("Descripción del problema:", informacion_persona.persona.descripcionDelProblema)
+            print("Número de solicitud:", informacion_persona.persona.numeroDeSolicitud)
+            print()
 
-                persona = Persona(urgencia, nombre, problema, numero_de_solicitud)
-                informacion_persona = InformacionPersona(persona)
-                colalvl3.enqueue(informacion_persona)
+            nombre = informacion_persona.persona.nombre
+            problema = informacion_persona.persona.descripcionDelProblema
+            urgencia = informacion_persona.persona.urgencia
+            numero_de_solicitud = informacion_persona.persona.numeroDeSolicitud
 
-            if informacion_persona.persona.urgencia == 2:
-                print("Solicitud atendida:")
-                print("Urgencia:", informacion_persona.persona.urgencia)
-                print("Nombre:", informacion_persona.persona.nombre)
-                print("Descripción del problema:", informacion_persona.persona.descripcionDelProblema)
-                print("Número de solicitud:", informacion_persona.persona.numeroDeSolicitud)
-                print()
+            persona = Persona(urgencia, nombre, problema, numero_de_solicitud)
+            informacion_persona = InformacionPersona(persona)
 
-                nombre = informacion_persona.persona.nombre
-                problema = informacion_persona.persona.descripcionDelProblema
-                urgencia = informacion_persona.persona.urgencia
-                numero_de_solicitud = informacion_persona.persona.numeroDeSolicitud
-
-                persona = Persona(urgencia, nombre, problema, numero_de_solicitud)
-                informacion_persona = InformacionPersona(persona)
-                colalvl2.enqueue(informacion_persona)
-
-            if informacion_persona.persona.urgencia == 1:
-                print("Solicitud atendida:")
-                print("Urgencia:", informacion_persona.persona.urgencia)
-                print("Nombre:", informacion_persona.persona.nombre)
-                print("Descripción del problema:", informacion_persona.persona.descripcionDelProblema)
-                print("Número de solicitud:", informacion_persona.persona.numeroDeSolicitud)
-                print()
-
-                nombre = informacion_persona.persona.nombre
-                problema = informacion_persona.persona.descripcionDelProblema
-                urgencia = informacion_persona.persona.urgencia
-                numero_de_solicitud = informacion_persona.persona.numeroDeSolicitud
-
-                persona = Persona(urgencia, nombre, problema, numero_de_solicitud)
-                informacion_persona = InformacionPersona(persona)
-                colalvl1.enqueue(informacion_persona)
+            colaABC.enqueue(informacion_persona)
 
             self.cola.dequeue()
 
-        print("Cola nivel 3")
-        colalvl3.imprimir_cola() 
+        print("Cola nivel Ordenada alfabeticamente")
+        colaABC.ordenar_por_nombre()
+        colaABC.imprimir_cola()
 
-        print()
-
-        print("Cola nivel 2")
-        colalvl2.imprimir_cola()  
-
-        print()
-
-        print("Cola nivel 1")
-        colalvl1.imprimir_cola()  
-
-        self.menu()
+    def verificar_niveles(self):
+            mayor = -1  # Variable para encontrar el nivel de urgencia mas alto encontrado
+            posicion = 0
+    
+            for informacion_persona in self.cola.cola:
+                if informacion_persona.persona.urgencia > mayor:
+                    print(informacion_persona.persona.urgencia)
+                    print("Hola")
+                    print()
