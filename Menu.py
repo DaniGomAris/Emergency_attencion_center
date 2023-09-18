@@ -3,6 +3,7 @@ import sys
 from Priority_Queue import PriorityQueue
 from Datos_Solicitud import Persona, InformacionPersona
 from Persons import nombres,apellidos,problemas_tecnicos
+from Priority_QueueABC import PriorityQueue_ABC
 
 class MenuProgram:
 
@@ -15,7 +16,7 @@ class MenuProgram:
             nombre = random.choice(nombres)
             apellido = random.choice(apellidos)
             problema = random.choice(problemas_tecnicos)
-            urgencia = random.randint(1,3)
+            urgencia = random.randint(1,100)
             numero_de_solicitud = random.randint(1, 2500)
 
             persona = Persona(urgencia, nombre +" "+ apellido, problema, numero_de_solicitud)
@@ -61,15 +62,13 @@ Menu
         urgencia = int(input("Ingrese nivel de urgencia(1,2,3): "))
         numero_de_solicitud = random.randint(1, 2500)
 
-        if 1 <= urgencia <= 3: # Verifica su nivel de urgencia (mayor o igual a 1 y menor o igual a 3)
-            persona = Persona(urgencia, nombre +" "+ apellido, tecnicos, numero_de_solicitud) # Informacion de la solicitud
-            informacion_persona = InformacionPersona(persona) # Crea una nueva persona
-            self.cola.enqueue(informacion_persona) # Encola la nueva solicitud
-            self.cola.llevar_a_primera_posicion() # Reorganiza la cola
-            self.menu()
-        else:
-            print("nivel de urgencia incorrecto")
-            self.menu()
+
+        persona = Persona(urgencia, nombre +" "+ apellido, tecnicos, numero_de_solicitud) # Informacion de la solicitud
+        informacion_persona = InformacionPersona(persona) # Crea una nueva persona
+        self.cola.enqueue(informacion_persona) # Encola la nueva solicitud
+        self.cola.llevar_a_primera_posicion() # Reorganiza la cola
+        self.menu()
+
             
     def atender_solicitud(self):
         informacion_persona = self.cola.top() # informacion de la persona de la primera posicion
@@ -88,7 +87,7 @@ Menu
         
     def actualizar_solicitud(self):
         numero_de_solicitud = int(input("Ingrese el número de solicitud que desea actualizar: "))  # Numero de solicitud para hacer cambio de nivel de urgencia
-        new_urgencia = int(input("Ingrese el nuevo nivel de urgencia (1, 2, 3): "))  # Nuevo nivel de urgencia
+        new_urgencia = int(input("Ingrese el nuevo nivel de urgencia: "))  # Nuevo nivel de urgencia
 
         for informacion_persona in self.cola.cola:  #  La primera cola es la instancia de la clase (MenuProgram) y la segunda cola se refiere a la cola de prioridad dentro de esa instancia (PriorityQueue)
             if informacion_persona.persona.numeroDeSolicitud == numero_de_solicitud:  # Verifica si la solicitud ingresada si existe
@@ -100,14 +99,12 @@ Menu
         print("No se encontró ninguna solicitud con ese número de solicitud.") 
         self.menu() 
 
-
-    def atender_lotes(self, colaABC = PriorityQueue_ABC()):
-        posicion = 0
+    def atender_lotes(self):
+        colas_ABC_por_urgencia = {} 
 
         while not self.cola.is_empty():
-
             informacion_persona = self.cola.top()
-            print(informacion_persona.persona.urgencia)
+            nivel_urgencia = informacion_persona.persona.urgencia
 
             print("Solicitud atendida:")
             print("Urgencia:", informacion_persona.persona.urgencia)
@@ -124,20 +121,15 @@ Menu
             persona = Persona(urgencia, nombre, problema, numero_de_solicitud)
             informacion_persona = InformacionPersona(persona)
 
-            colaABC.enqueue(informacion_persona)
+            if nivel_urgencia not in colas_ABC_por_urgencia:
+                colas_ABC_por_urgencia[nivel_urgencia] = PriorityQueue_ABC()
+
+            colas_ABC_por_urgencia[nivel_urgencia].enqueue(informacion_persona)
 
             self.cola.dequeue()
 
-        print("Cola nivel Ordenada alfabeticamente")
-        colaABC.ordenar_por_nombre()
-        colaABC.imprimir_cola()
-
-    def verificar_niveles(self):
-            mayor = -1  # Variable para encontrar el nivel de urgencia mas alto encontrado
-            posicion = 0
-    
-            for informacion_persona in self.cola.cola:
-                if informacion_persona.persona.urgencia > mayor:
-                    print(informacion_persona.persona.urgencia)
-                    print("Hola")
-                    print()
+        for nivel_urgencia, cola_ABC in colas_ABC_por_urgencia.items():
+            print(f"Cola Nivel de Urgencia {nivel_urgencia}")
+            cola_ABC.ordenar_por_nombre()
+            cola_ABC.imprimir_cola()
+            print()

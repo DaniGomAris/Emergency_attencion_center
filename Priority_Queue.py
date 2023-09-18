@@ -1,6 +1,3 @@
-from Datos_Solicitud import Persona, InformacionPersona
-from Persons import nombres,apellidos,problemas_tecnicos
-
 class PriorityQueue:
     def __init__(self):
         self.cola = []
