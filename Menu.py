@@ -100,12 +100,22 @@ Menu
         self.menu() 
 
     def atender_lotes(self):
-        colas_ABC_por_urgencia = {} 
+        # Diccionario para almacenar colas ABC de acuerdo al nivel de urgencia
+        # Las claves del diccionario son los niveles de urgencia
+        # Los valores de cada clave son las colas ABC
+
+        #colas_ABC_por_urgencia = {
+        #   1: <Cola ABC>,
+        #   2: <Cola ABC>,
+        #   3: <Cola ABC>}
+
+        colas_ABC_por_urgencia = {}
 
         while not self.cola.is_empty():
-            informacion_persona = self.cola.top()
-            nivel_urgencia = informacion_persona.persona.urgencia
+            informacion_persona = self.cola.top() # Solicitud con mayor urgencia de la cola
+            nivel_urgencia = informacion_persona.persona.urgencia  # Obtener el nivel de urgencia
 
+            # Imprimir la informacion de la solicitud atendida
             print("Solicitud atendida:")
             print("Urgencia:", informacion_persona.persona.urgencia)
             print("Nombre:", informacion_persona.persona.nombre)
@@ -113,23 +123,32 @@ Menu
             print("Número de solicitud:", informacion_persona.persona.numeroDeSolicitud)
             print()
 
+            # Crear la urgencia para añadirla a las colas ABC
             nombre = informacion_persona.persona.nombre
             problema = informacion_persona.persona.descripcionDelProblema
             urgencia = informacion_persona.persona.urgencia
             numero_de_solicitud = informacion_persona.persona.numeroDeSolicitud
 
+            # Creacion del objeto
             persona = Persona(urgencia, nombre, problema, numero_de_solicitud)
             informacion_persona = InformacionPersona(persona)
 
+            # Verificar si ya existe una cola ABC para ese nivel de urgencia
             if nivel_urgencia not in colas_ABC_por_urgencia:
-                colas_ABC_por_urgencia[nivel_urgencia] = PriorityQueue_ABC()
+                colas_ABC_por_urgencia[nivel_urgencia] = PriorityQueue_ABC()  # Crear una nueva cola ABC
 
+            # Agregar la nueva urgencia a la cola ABC que corresponde al nivel de urgencia
             colas_ABC_por_urgencia[nivel_urgencia].enqueue(informacion_persona)
 
+            # Desencolar de la cola principal
             self.cola.dequeue()
 
+        # Imprimir las colas ABC organizadas por nivel de urgencia y ordenadas por nombre
+        # Ciclo en las claves del diccionario(niveles de urgencia) y en los valores del diccionario(Colas ABC)
+        # El .items() permite obtener todos los pares clave-valor del diccionario
         for nivel_urgencia, cola_ABC in colas_ABC_por_urgencia.items():
             print(f"Cola Nivel de Urgencia {nivel_urgencia}")
-            cola_ABC.ordenar_por_nombre()
-            cola_ABC.imprimir_cola()
+            cola_ABC.ordenar_por_nombre()  # Ordenar la cola ABC por nombre
+            cola_ABC.imprimir_cola()  # Imprimir la cola ABC
             print()
+
