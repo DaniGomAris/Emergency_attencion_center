@@ -1,9 +1,9 @@
 import random
 import sys
 from Priority_Queue import PriorityQueue
+from Priority_QueueABC import PriorityQueue_ABC
 from Datos_Solicitud import Persona, InformacionPersona
 from Persons import nombres,apellidos,problemas_tecnicos
-from Priority_QueueABC import PriorityQueue_ABC
 
 class MenuProgram:
 
@@ -16,14 +16,13 @@ class MenuProgram:
             nombre = random.choice(nombres)
             apellido = random.choice(apellidos)
             problema = random.choice(problemas_tecnicos)
-            urgencia = random.randint(1,100)
+            urgencia = random.randint(1,10)
             numero_de_solicitud = random.randint(1, 2500)
 
             persona = Persona(urgencia, nombre +" "+ apellido, problema, numero_de_solicitud)
             informacion_persona = InformacionPersona(persona)
             self.cola.enqueue(informacion_persona)
-            contador += 1
-        cola = self.cola.llevar_a_primera_posicion()   
+            contador += 1 
                                  
     def menu(self):
         print("""
@@ -92,7 +91,7 @@ Menu
         for informacion_persona in self.cola.cola:  #  La primera cola es la instancia de la clase (MenuProgram) y la segunda cola se refiere a la cola de prioridad dentro de esa instancia (PriorityQueue)
             if informacion_persona.persona.numeroDeSolicitud == numero_de_solicitud:  # Verifica si la solicitud ingresada si existe
                 informacion_persona.persona.urgencia = new_urgencia  # Actualiza el nivel de urgencia de la solicitud
-                self.cola.llevar_a_primera_posicion()  # Reorganiza la cola
+                self.cola.ordenar_cola()  # Reorganiza la cola
                 print("Solicitud actualizada correctamente.")
                 self.menu() 
 
@@ -148,7 +147,8 @@ Menu
         # El .items() permite obtener todos los pares clave-valor del diccionario
         for nivel_urgencia, cola_ABC in colas_ABC_por_urgencia.items():
             print(f"Cola Nivel de Urgencia {nivel_urgencia}")
-            cola_ABC.ordenar_por_nombre()  # Ordenar la cola ABC por nombre
             cola_ABC.imprimir_cola()  # Imprimir la cola ABC
             print()
+
+        self.menu()
 
