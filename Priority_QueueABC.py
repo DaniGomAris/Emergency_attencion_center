@@ -20,9 +20,9 @@ class PriorityQueue_ABC:
         return len(self.colaABC) == 0
     
     def ordenar_cola(self):
-        self.colaABC.sort(key=lambda informacion_persona: informacion_persona.persona.nombre)
+        self.colaABC.sort(key=lambda persona: persona.nombre)
 
     def imprimir_cola(self):
         print("|Solicitud  |  Nombre | Problema | Nivel|")
         for informacion_persona in self.colaABC:
-            print(f"{informacion_persona.datos_persona}")
+            print(f"{informacion_persona.numeroDeSolicitud} | {informacion_persona.nombre} | {informacion_persona.descripcionDelProblema} | {informacion_persona.urgencia}")

@@ -20,9 +20,9 @@ class PriorityQueue:
         return len(self.cola) == 0
     
     def ordenar_cola(self):
-        self.cola.sort(reverse=True, key=lambda informacion_persona: informacion_persona.persona.urgencia)
+        self.cola.sort(reverse=True, key=lambda persona: persona.urgencia)
 
     def imprimir_cola(self):
         print("|Solicitud  |  Nombre | Problema | Nivel|")
         for informacion_persona in self.cola:
-            print(f"{informacion_persona.datos_persona}")
+            print(f"{informacion_persona.numeroDeSolicitud} | {informacion_persona.nombre} | {informacion_persona.descripcionDelProblema} | {informacion_persona.urgencia}")
